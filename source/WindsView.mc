@@ -28,8 +28,6 @@ class WindsView extends CommonView {
     //   time -- the time that this wind speed was recorded
     //   
     var windData = [];
-    // hack to make it center on Seattle initially
-    var iWindData = 3;
 
     // what time did we last refresh the wind data?
     var lastDataRefresh;
@@ -237,7 +235,7 @@ class WindsView extends CommonView {
                 if (i == iWindData) { cellHeight = y; }
             }
         } else {
-            var y = 0;
+            y = 0;
             var font = Graphics.FONT_LARGE;
             y += dc.getFontHeight(font) + 4;
             drawText(dc, center, y, font, "Loading", Graphics.TEXT_JUSTIFY_CENTER);    

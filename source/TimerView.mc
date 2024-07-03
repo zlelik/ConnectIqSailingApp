@@ -49,7 +49,6 @@ class TimerView extends CommonView {
     var topLeftButtonCallback = null;
     var topRightButtonCallback = null;
     var bottomLeftButtonCallback = null;
-    var bottomRightButtonCallback = null;
 
     var finishTimes = null;
     var raceTime = null;
@@ -251,7 +250,6 @@ class TimerView extends CommonView {
                 break;
             default:
                 return false;
-                break;
         }
         Ui.popView(Ui.SLIDE_DOWN);
         if (reset)
@@ -366,7 +364,6 @@ class TimerView extends CommonView {
         topLeftButtonCallback = method(:promptReset);
         topRightButtonCallback = null;
         bottomLeftButtonCallback = null;
-        bottomRightButtonCallback = method(:quit);
 
         switch (mode)
         {
@@ -527,14 +524,13 @@ class TimerView extends CommonView {
         var view = Ui.View.findDrawableById("TimerValue");
         if (view != null)
         {
-            view.setText(timerText);
+            (view as Toybox.WatchUi.Text).setText(timerText);
         }
 
         // set finish text in view
         if (finishTimes != null)
         {
-            var lastFinish = null;
-
+            var lastFinish = finishTimes[0];
             // fix the mode
             if (mode != mode_finish) 
             {
@@ -567,36 +563,41 @@ class TimerView extends CommonView {
                 duration = duration.value();
                 var finishTimerText = durationText(duration);
 
-                var timestruct = Gregorian.info(finishTimes[i], Time.FORMAT_SHORT);
+                timestruct = Gregorian.info(finishTimes[i], Time.FORMAT_SHORT);
                 var clockTime = timestruct.hour.format("%02u") + ":" + timestruct.min.format("%02u") + ":" + timestruct.sec.format("%02u");
 
                 view = Ui.View.findDrawableById("FinishClock" + finish_index);
                 if (view != null) 
                 {
-                    view.setText(clockTime);
+                    (view as Toybox.WatchUi.Text).setText(clockTime);
                 }
                 view = Ui.View.findDrawableById("FinishTimer" + finish_index);
                 if (view != null) 
                 {
-                    view.setText(finishTimerText);
+                    (view as Toybox.WatchUi.Text).setText(finishTimerText);
                 }
                 view = Ui.View.findDrawableById("FinishOffset" + finish_index);
                 if (view != null) 
                 {
-                    view.setText(offset);
+                    (view as Toybox.WatchUi.Text).setText(offset);
                 }
                 finish_index = finish_index + 1;
-                lastFinish = finishTimes[0];
             }
 
             for (var i = finish_index; i < finishTimes.size(); i++) 
             {
                 view = Ui.View.findDrawableById("FinishClock" + i);
-                if (view != null) { view.setText(""); }
+                if (view != null) {
+                    (view as Toybox.WatchUi.Text).setText("");
+                }
                 view = Ui.View.findDrawableById("FinishTimer" + i);
-                if (view != null) { view.setText(""); }
+                if (view != null) {
+                    (view as Toybox.WatchUi.Text).setText("");
+                }
                 view = Ui.View.findDrawableById("FinishOffset" + i);
-                if (view != null) { view.setText(""); }
+                if (view != null) {
+                    (view as Toybox.WatchUi.Text).setText("");
+                }
             }
         }
 
@@ -606,12 +607,12 @@ class TimerView extends CommonView {
         // draw a G in the upper left showing GPS status
         // BUGBUG - move into layout
         dc.setColor(GpsAccuracyColor($.gpsAccuracy), Graphics.COLOR_TRANSPARENT);
-        dc.drawText(32, 25, Graphics.FONT_XTINY, "G", Graphics.TEXT_JUSTIFY_LEFT);
+        dc.drawText(76, 41, Graphics.FONT_SMALL, "G", Graphics.TEXT_JUSTIFY_LEFT);
 
         if ($.session != null && $.session.isRecording())
         {
             dc.setColor(Graphics.COLOR_RED, Graphics.COLOR_TRANSPARENT);
-            dc.fillCircle(screenWidth - 40, 39, 4);
+            dc.fillCircle(screenWidth - 75, 67, 8);
         }
     }
 

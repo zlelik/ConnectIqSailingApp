@@ -59,7 +59,7 @@ class TimeField extends DataField
 {
     function initialize()
     {
-        return DataField.initialize("clk", "");
+        DataField.initialize("clk", "");
     }
     
     function value()
@@ -74,7 +74,7 @@ class TimerField extends DataFieldWithSet
 {
     function initialize()
     {
-        return DataFieldWithSet.initialize("tmr", "");
+        DataFieldWithSet.initialize("tmr", "");
     }
 }
 
@@ -82,7 +82,7 @@ class SogField extends DataField
 {
     function initialize()
     {
-        return DataField.initialize("sog", "kts");
+        DataField.initialize("sog", "kts");
     }
     
     function value()
@@ -97,7 +97,7 @@ class CogField extends DataField
 {
     function initialize()
     {
-        return DataField.initialize("cog", "deg");
+        DataField.initialize("cog", "deg");
     }
 
     function value()
@@ -112,7 +112,7 @@ class DtwField extends DataFieldWithSet
 {
     function initialize()
     {
-        return DataFieldWithSet.initialize("dtw", "nm");
+        DataFieldWithSet.initialize("dtw", "nm");
     }
 }
 
@@ -120,7 +120,7 @@ class BtwField extends DataFieldWithSet
 {
     function initialize()
     {
-        return DataFieldWithSet.initialize("btw", "deg");
+        DataFieldWithSet.initialize("btw", "deg");
     }
 }
 
@@ -128,7 +128,7 @@ class VmgField extends DataFieldWithSet
 {
     function initialize()
     {
-        return DataFieldWithSet.initialize("vmg", "kts");
+        DataFieldWithSet.initialize("vmg", "kts");
     }
 }
 

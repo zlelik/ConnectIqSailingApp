@@ -1,10 +1,11 @@
-using Toybox.WatchUi as Ui;
-using Toybox.Time as Time;
-using Toybox.Application as App;
-using Toybox.Attention;
-using Toybox.Timer;
+import Toybox.WatchUi;
+import Toybox.Time;
+import Toybox.Application;
+import Toybox.Attention;
+import Toybox.Timer;
+import Toybox.Position;
 
-class MyMenu2Delegate extends Ui.Menu2InputDelegate {
+class MyMenu2Delegate extends WatchUi.Menu2InputDelegate {
     var view;
 
     function initialize(viewPointer) {
@@ -21,7 +22,7 @@ class MyMenu2Delegate extends Ui.Menu2InputDelegate {
 //
 // Generic input delegate that should work on more watches.  Tested on the HR
 //
-class SailingAppDelegateGeneric extends Ui.BehaviorDelegate {
+class SailingAppDelegateGeneric extends WatchUi.BehaviorDelegate {
     var viewIndex = 0;
     var currentView = null;
     var viewsDict = {};
@@ -40,7 +41,7 @@ class SailingAppDelegateGeneric extends Ui.BehaviorDelegate {
         }
 
         // read our settings
-        var app = App.getApp();
+        var app = Application.getApp();
         var detectedPugetSound = app.getProperty("detectedPugetSound");
         var forcePugetSound = app.getProperty("forcePugetSound");
         var hideTimerView = app.getProperty("hideTimerView");
@@ -118,7 +119,7 @@ class SailingAppDelegateGeneric extends Ui.BehaviorDelegate {
 
         // turn on the GPS
         System.println("enable GPS");
-        Position.enableLocationEvents(Position.LOCATION_CONTINUOUS, method(:onPositionUpdate));
+        Position.enableLocationEvents(Position.LOCATION_CONTINUOUS, method(:onPosition));
 
         // set the default view
         currentView = viewsDict[:timerView];
@@ -127,19 +128,8 @@ class SailingAppDelegateGeneric extends Ui.BehaviorDelegate {
         BehaviorDelegate.initialize();
     }
 
-    function reduceMemory()
-    {
-        for (var i = 0; i < views.size(); i++)
-        {
-            if (views[i] != null)
-            {
-                views[i].reduceMemory();
-            }
-        }
-    }
-
     // Called whenever we get a new position from the GPS
-    function onPositionUpdate(info)
+    function onPosition(info)
     {
         // send position updates to all views
         for (var i = 0; i < views.size(); i++)
@@ -154,7 +144,7 @@ class SailingAppDelegateGeneric extends Ui.BehaviorDelegate {
         if (!checkedLocation && info.position != null)
         {
             var pos = info.position.toDegrees();
-            var app = App.getApp();
+            var app = Application.getApp();
             var inPugetSound = false;
             if (pos[0] > 46.75 && pos[0] < 49 && pos[1] > -125 && pos[1] < -121) { inPugetSound = true; }
             app.setProperty("detectedPugetSound", inPugetSound);
@@ -169,6 +159,17 @@ class SailingAppDelegateGeneric extends Ui.BehaviorDelegate {
                 views = [ views[0], views[1], views[2], windsView ];
             }
             */
+        }
+    }
+
+    function reduceMemory()
+    {
+        for (var i = 0; i < views.size(); i++)
+        {
+            if (views[i] != null)
+            {
+                views[i].reduceMemory();
+            }
         }
     }
 
@@ -218,19 +219,19 @@ class SailingAppDelegateGeneric extends Ui.BehaviorDelegate {
     {
         if (viewsDict[:timerView] != null && currentView != viewsDict[:timerView])
         {
-            menu.addItem(new Ui.MenuItem("Timer", "Show Timer Page", :timerView, {}));
+            menu.addItem(new WatchUi.MenuItem("Timer", "Show Timer Page", :timerView, {}));
         }
         if (viewsDict[:marksView] != null && currentView != viewsDict[:marksView])
         {
-            menu.addItem(new Ui.MenuItem("Marks", "Show Marks Page", :marksView, {}));
+            menu.addItem(new WatchUi.MenuItem("Marks", "Show Marks Page", :marksView, {}));
         }
         if (viewsDict[:tidesView] != null && currentView != viewsDict[:tidesView])
         {
-            menu.addItem(new Ui.MenuItem("Tides", "Show Tides Page", :tidesView, {}));
+            menu.addItem(new WatchUi.MenuItem("Tides", "Show Tides Page", :tidesView, {}));
         }
         if (viewsDict[:windsView] != null && currentView != viewsDict[:windsView])
         {
-            menu.addItem(new Ui.MenuItem("Winds", "Show Winds Page", :windsView, {}));
+            menu.addItem(new WatchUi.MenuItem("Winds", "Show Winds Page", :windsView, {}));
         }
     }
 
@@ -241,8 +242,8 @@ class SailingAppDelegateGeneric extends Ui.BehaviorDelegate {
         if (viewsDict[menuItemSymbol] != null)
         {
             currentView = viewsDict[menuItemSymbol];
-            Ui.popView(Ui.SLIDE_DOWN);
-            Ui.switchToView(viewsDict[menuItemSymbol], self, Ui.SLIDE_IMMEDIATE);
+            WatchUi.popView(WatchUi.SLIDE_DOWN);
+            WatchUi.switchToView(viewsDict[menuItemSymbol], self, WatchUi.SLIDE_IMMEDIATE);
             return true;
         }
         else
@@ -253,13 +254,13 @@ class SailingAppDelegateGeneric extends Ui.BehaviorDelegate {
 }
 
 var quitAfterSave = false;
-class ConfirmQuitDelegate extends Ui.ConfirmationDelegate 
+class ConfirmQuitDelegate extends WatchUi.ConfirmationDelegate 
 {
-    var timer = null;
+    var myTimer = null;
 
     function initialize() 
     {
-        return Ui.ConfirmationDelegate.initialize();
+        WatchUi.ConfirmationDelegate.initialize();
     }
     function onResponse(value) 
     {
@@ -267,16 +268,17 @@ class ConfirmQuitDelegate extends Ui.ConfirmationDelegate
         System.println("value = " + value);
         if (value == 0) 
         {
-            return;
+            return false;
         }
         else 
         {
             if ($.session != null)
             {
                 $.quitAfterSave = true;
-                timer = new Timer.Timer();
+                myTimer = new Timer.Timer();
                 // prompt for save when this dialog exits
-                timer.start(method(:promptSave), 1, false);
+                myTimer.start(method(:promptSave), 1, false);
+                return true;
             }
             else
             {
@@ -287,20 +289,22 @@ class ConfirmQuitDelegate extends Ui.ConfirmationDelegate
 
     function promptSave()
     {
-        timer.stop();
-        timer = null;
-        var dialog = new Ui.Confirmation("Save track?");
-        Ui.pushView(dialog, new ConfirmSaveDelegate(), Ui.SLIDE_IMMEDIATE);
+        if (myTimer != null) {
+            myTimer.stop();
+            myTimer = null;
+        }
+        var dialog = new WatchUi.Confirmation("Save track?");
+        WatchUi.pushView(dialog, new ConfirmSaveDelegate(), WatchUi.SLIDE_IMMEDIATE);
     }
 }
 
-class ConfirmResetDelegate extends Ui.ConfirmationDelegate 
+class ConfirmResetDelegate extends WatchUi.ConfirmationDelegate 
 {
     var timer = null;
 
     function initialize() 
     {
-        return Ui.ConfirmationDelegate.initialize();
+        WatchUi.ConfirmationDelegate.initialize();
     }
     function onResponse(value) 
     {
@@ -313,28 +317,32 @@ class ConfirmResetDelegate extends Ui.ConfirmationDelegate
                 timer = new Timer.Timer();
                 // prompt for save when this dialog exits
                 timer.start(method(:promptSave), 1, false);
+                return true;
             }
             else
             {
                 $.timer.reset();
             }
         }
+        return false;
     }
 
     function promptSave()
     {
-        timer.stop();
-        timer = null;
-        var dialog = new Ui.Confirmation("Save track?");
-        Ui.pushView(dialog, new ConfirmSaveDelegate(), Ui.SLIDE_IMMEDIATE);
+        if (timer != null) {
+            timer.stop();
+            timer = null;
+        }
+        var dialog = new WatchUi.Confirmation("Save track?");
+        WatchUi.pushView(dialog, new ConfirmSaveDelegate(), WatchUi.SLIDE_IMMEDIATE);
     }
 }
 
-class ConfirmSaveDelegate extends Ui.ConfirmationDelegate 
+class ConfirmSaveDelegate extends WatchUi.ConfirmationDelegate 
 {
     function initialize() 
     {
-        return Ui.ConfirmationDelegate.initialize();
+        WatchUi.ConfirmationDelegate.initialize();
     }
     function onResponse(value) 
     {
@@ -345,6 +353,7 @@ class ConfirmSaveDelegate extends Ui.ConfirmationDelegate
         {
             $.session.save();
             System.println("saving session");
+            return true;
         }
         $.session = null;
         $.timer.reset();
@@ -352,5 +361,6 @@ class ConfirmSaveDelegate extends Ui.ConfirmationDelegate
         {
             System.exit();
         }
+        return false;
     }
 }

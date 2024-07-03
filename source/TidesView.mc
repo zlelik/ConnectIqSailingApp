@@ -104,7 +104,7 @@ class TidesView extends CommonView {
         timer = new Timer.Timer();
 
         var startOfYear = Gregorian.moment({:day=>1, :month=>1, :hour=>0, :minute=>0, :second=>0});
-        var now = Gregorian.now();
+        var now = Time.now();
         var start = now.add(new Time.Duration(-TIDE_BATCH_SECONDS * TIDE_BACK_BATCHES));
         var startInfo = Gregorian.info(start, Time.FORMAT_SHORT);
         var nowInfo = Gregorian.info(now, Time.FORMAT_SHORT);
@@ -251,7 +251,7 @@ class TidesView extends CommonView {
             fComputingData = true;
 
             var startOfYear = Gregorian.moment({:day=>1, :month=>1, :hour=>0, :minute=>0, :second=>0});
-            var now = Gregorian.now();
+            var now = Time.now();
             var start = now.add(new Time.Duration(-TIDE_BATCH_SECONDS * TIDE_BACK_BATCHES));
             var startInfo = Gregorian.info(start, Time.FORMAT_SHORT);
             var nowInfo = Gregorian.info(now, Time.FORMAT_SHORT);

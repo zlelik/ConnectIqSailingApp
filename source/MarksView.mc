@@ -1,7 +1,7 @@
 using Toybox.WatchUi as Ui;
 using Toybox.Time as Time;
 using Toybox.Time.Gregorian as Gregorian;
-using Toybox.Lang as Lang;
+import Toybox.Lang;
 using Toybox.System as System;
 using Toybox.Timer as Timer;
 using Toybox.Position as Position;
@@ -173,15 +173,20 @@ class MarksView extends CommonView {
             "Content-Type" => Comm.REQUEST_CONTENT_TYPE_URL_ENCODED,
             "Accept" => "application/json"
         };
-        Comm.makeWebRequest(
-            url, 
-            { },
-            {
-                :headers => headers,
-                :method => Comm.HTTP_REQUEST_METHOD_GET,
-                :responseType => Comm.HTTP_RESPONSE_CONTENT_TYPE_JSON
-            },
-            method(:onReceive));
+    
+        var params = {                                              // set the parameters
+              "definedParams" => ""
+        };
+
+        var options = {                                             // set the options
+           :method => Communications.HTTP_REQUEST_METHOD_GET,      // set HTTP method
+           :headers => {                                           // set headers
+                   "Content-Type" => Communications.REQUEST_CONTENT_TYPE_JSON},// set response type
+           :responseType => Communications.HTTP_RESPONSE_CONTENT_TYPE_JSON
+        };
+
+        Communications.makeWebRequest(url, params, options, method(:onReceive));
+
         System.println("marks: makeRequest() done");
     }
 
@@ -191,7 +196,7 @@ class MarksView extends CommonView {
     // responseCode -- HTTP response code when doing the JSON request
     // data -- the raw data that is received
     //
-    function onReceive(responseCode, data) 
+    function onReceive(responseCode as Number, data as Dictionary?) as Void
     {
         System.println("marks: onReceive(): " + responseCode);
 
@@ -490,6 +495,7 @@ class MarksView extends CommonView {
         {
             if (errorMode)
             {
+                //setLayout(Rez.Layouts.MarksViewError(dc));
                 setLayout(Rez.Layouts.MarksViewError(dc));
             }
             else
@@ -557,7 +563,9 @@ class MarksView extends CommonView {
 
         if (selectedFolder >= 0 && markNameIndex >= 0)
         {
-            markIdText = folderNames[selectedFolder] + "/" + markShortname;
+            //markIdText = folderNames[selectedFolder] + "/" + markShortname;
+            // folderNames[selectedFolder] + "/" was removed, because it always has the same value and using too much screen space.
+            markIdText = markShortname;
             markNameText = markName[markNameIndex];
         }
 

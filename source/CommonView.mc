@@ -24,6 +24,8 @@ class CommonView extends Ui.View {
     var highSpeedRefresh = false;
     var clockSpeedFont = Graphics.FONT_MEDIUM;
     var updateTimer;
+    // hack to make it center on Seattle initially
+    var iWindData = 3;
 
     // initialize the view
     function initialize(viewName) {
@@ -165,7 +167,7 @@ class CommonView extends Ui.View {
             // onUpdate every 10sec
             updateTimer.start(method(:refreshView), 10000, true);
         }
-        return true;
+        //return true;
     }
 
     function setValueText(id, text)
@@ -178,7 +180,7 @@ class CommonView extends Ui.View {
         }
         if (d != null)
         {
-            d.setText(text);
+            (d as Toybox.WatchUi.Text).setText(text);
         }
     }
 
@@ -193,7 +195,7 @@ class CommonView extends Ui.View {
         {
             if ($.speed == -1)
             {
-                view.setText("--");
+                (view as Toybox.WatchUi.Text).setText("--");
             }
             else
             {
@@ -204,7 +206,7 @@ class CommonView extends Ui.View {
                 {
                     speedText = speedText + "kts";
                 }
-                view.setText(speedText);
+                (view as Toybox.WatchUi.Text).setText(speedText);
             }
         }
 
@@ -215,7 +217,7 @@ class CommonView extends Ui.View {
             var headingText = ($.heading * 57.2957795);
             if (headingText < 0) { headingText += 360; }
             headingText = headingText.format("%02.0f");
-            view.setText(headingText);
+            (view as Toybox.WatchUi.Text).setText(headingText);
         }
 
         // clock label no seconds
@@ -225,7 +227,7 @@ class CommonView extends Ui.View {
             var now = Time.now();
             var timestruct = Gregorian.info(now, Time.FORMAT_SHORT);
             var clockTime = timestruct.hour.format("%02u") + ":" + timestruct.min.format("%02u");
-            view.setText(clockTime);
+            (view as Toybox.WatchUi.Text).setText(clockTime);
         }
 
         // clock label with seconds
@@ -235,7 +237,7 @@ class CommonView extends Ui.View {
             var now = Time.now();
             var timestruct = Gregorian.info(now, Time.FORMAT_SHORT);
             var clockTime = timestruct.hour.format("%02u") + ":" + timestruct.min.format("%02u") + ":" + timestruct.sec.format("%02u");
-            view.setText(clockTime);
+            (view as Toybox.WatchUi.Text).setText(clockTime);
         }
     }
 
@@ -246,9 +248,9 @@ class CommonView extends Ui.View {
     function appendToArray(a, i)
     {
         var newA = new[a.size() + 1];
-        for (var i = 0; i < a.size(); i++)
+        for (var j = 0; j < a.size(); j++)
         {
-            newA[i] = a[i];
+            newA[j] = a[j];
         }
         newA[a.size()] = i;
         return newA;
@@ -376,7 +378,7 @@ class CommonView extends Ui.View {
         updateTimer.stop();
         updateTimer = null;
 
-        return true;
+        //return true;
     }
 
     function ErrorDialog(text)
