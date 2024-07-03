@@ -1,23 +1,5 @@
 <resources>
     <drawable-list id="timergrid" foreground="Graphics.COLOR_WHITE">
-        <!-- This positions are for 240x240 resolution -->
-        <!-- <shape type="rectangle" x="0" y="23" width="239" height="1" color="Graphics.COLOR_WHITE" />
-        <shape type="rectangle" x="0" y="55" width="239" height="1" color="Graphics.COLOR_WHITE" />
-        <shape type="rectangle" x="0" y="140" width="239" height="1" color="Graphics.COLOR_WHITE" />
-        <shape type="rectangle" x="0" y="215" width="239" height="1" color="Graphics.COLOR_WHITE" /> -->
-        <!-- Y position percentage for each line above
-            23 pixels - 9.58% (0.0958)
-            55 pixels - 22.92% (0.2292)
-            140 pixels - 58.33% (0.5833)
-            215 pixels - 89.58% (0.8958)
-        -->
-
-        <!-- Y position for 416x416 resolution
-            40 pixels - 9.58% (0.0958)
-            95 pixels - 22.92% (0.2292)
-            243 pixels - 58.33% (0.5833)
-            373 pixels - 89.58% (0.8958)
-        -->
         <!-- This positions are for 416x416 resolution -->
         <shape type="rectangle" x="0" y="35" width="416" height="1" color="Graphics.COLOR_WHITE" />
         <shape type="rectangle" x="0" y="95" width="416" height="1" color="Graphics.COLOR_WHITE" />
@@ -26,11 +8,6 @@
         
     </drawable-list>
     <drawable-list id="finishgrid" foreground="Graphics.COLOR_WHITE">
-        <!-- This positions are for 240x240 resolution -->
-        <!-- <shape type="rectangle" x="0" y="21" width="239" height="1" color="Graphics.COLOR_WHITE" />
-        <shape type="rectangle" x="0" y="55" width="239" height="1" color="Graphics.COLOR_WHITE" />
-        <shape type="rectangle" x="0" y="120" width="239" height="1" color="Graphics.COLOR_WHITE" />
-        <shape type="rectangle" x="0" y="215" width="239" height="1" color="Graphics.COLOR_WHITE" /> -->
         <!-- This positions are for 416x416 resolution -->
         <shape type="rectangle" x="0" y="32" width="416" height="1" color="Graphics.COLOR_WHITE" />
         <shape type="rectangle" x="0" y="95" width="416" height="1" color="Graphics.COLOR_WHITE" />
@@ -38,17 +15,11 @@
         <shape type="rectangle" x="0" y="373" width="416" height="1" color="Graphics.COLOR_WHITE" />
     </drawable-list>
     <drawable-list id="tidesgrid" foreground="Graphics.COLOR_WHITE">
-        <!-- This positions are for 240x240 resolution -->
-        <!-- <shape type="rectangle" x="0" y="23" width="239" height="1" color="Graphics.COLOR_WHITE" />
-        <shape type="rectangle" x="0" y="214" width="239" height="1" color="Graphics.COLOR_WHITE" /> -->
+        <!-- This positions are for 416x416 resolution -->
         <shape type="rectangle" x="0" y="32" width="416" height="1" color="Graphics.COLOR_WHITE" />
         <shape type="rectangle" x="0" y="373" width="416" height="1" color="Graphics.COLOR_WHITE" />
     </drawable-list>
     <drawable-list id="marksgrid" foreground="Graphics.COLOR_WHITE">
-        <!-- This positions are for 240x240 resolution -->
-        <!-- <shape type="rectangle" x="0" y="45" width="239" height="1" color="Graphics.COLOR_WHITE" />
-        <shape type="rectangle" x="0" y="118" width="239" height="1" color="Graphics.COLOR_WHITE" />
-        <shape type="rectangle" x="0" y="197" width="239" height="1" color="Graphics.COLOR_WHITE" /> -->
         <!-- This positions are for 416x416 resolution -->
         <shape type="rectangle" x="0" y="110" width="416" height="1" color="Graphics.COLOR_WHITE" />
         <shape type="rectangle" x="0" y="225" width="416" height="1" color="Graphics.COLOR_WHITE" />
